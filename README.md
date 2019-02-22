@@ -64,7 +64,7 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 + `mv $(basename "$file") nature` memindahkan file yang sudah terdekripsi ke dalam directory nature sehingga me-replace file di dalam directory nature yang masih terenkripsi
 + `done` penutup dari perintah `do`
 
-##### [Cronjob Soal1](cronjob.sh)
+##### [Cronjob Soal1](cronjob.sh) :
 ```
 14 14 14 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
 ```
