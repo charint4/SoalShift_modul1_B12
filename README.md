@@ -267,7 +267,7 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 
 ##### Cronjob Soal4:
 0 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh
-+ `0 * * * *` artinya script yang dipilih akan dijalankan “At minute 0.” ([by crontab.guru](https://crontab.guru/#0_*_*_*_*) yang artinya sama dengan "every hour" atau "setiap jam"
++ `0 * * * *` artinya script yang dipilih akan dijalankan “At minute 0.” (by [crontab.guru](https://crontab.guru/#0_*_*_*_*) yang artinya sama dengan "every hour" atau "setiap jam"
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
 + `/home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh` path tempat script yang ingin dipakai berada
 
@@ -327,7 +327,7 @@ awk '!/[Ss][Uu][Dd][Oo]/ && /[Cc][Rr][Oo][Nn]/ {if(NF<13) print}' /var/log/syslo
 ```
 2-30/6 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh
 ```
-+ `2-30/6 * * * *` artinya script yang dipilih akan dijalankan “At every 6th minute from 2 through 30.” ([by crontab.guru](https://crontab.guru/#2-30/6_*_*_*_*))
++ `2-30/6 * * * *` artinya script yang dipilih akan dijalankan “At every 6th minute from 2 through 30.” (by [crontab.guru](https://crontab.guru/#2-30/6_*_*_*_*))
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
 + `/home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh` path tempat script yang ingin dipakai berada
 
