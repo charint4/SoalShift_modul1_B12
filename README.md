@@ -74,7 +74,7 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 
 ##### Cronjob Soal1:
 ```
-14 14 14 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
+14 14 14 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/soal1.sh
 ```
 + `14 14 14 2 5` maksudnya script yang dipilih akan dijalankan _“At 14:14 on day-of-month 14 and on Friday in February.”_ (by [crontab.guru](https://crontab.guru/#14_14_14_2_5))
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
@@ -329,5 +329,5 @@ awk '!/[Ss][Uu][Dd][Oo]/ && /[Cc][Rr][Oo][Nn]/ {if(NF<13) print}' /var/log/syslo
 ```
 + `2-30/6 * * * *` artinya script yang dipilih akan dijalankan “At every 6th minute from 2 through 30.” (by [crontab.guru](https://crontab.guru/#2-30/6_*_*_*_*))
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
-+ `/home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh` path tempat script yang ingin dipakai berada
++ `/home/Penunggu/sisop/Modul1/jawab/lima/soal5.sh` path tempat script yang ingin dipakai berada
 
