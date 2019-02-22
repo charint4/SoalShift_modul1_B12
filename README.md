@@ -14,6 +14,7 @@
 + [Soal 4](#soal-4)
     + [Encrypt](#encrypt)
     + [Decrypt](#decrypt)
++ [Soal 5](#soal-5)
 
 ### Soal 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
@@ -293,7 +294,7 @@ d. Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh
 13:02, 13:08, 13:14, dst.
 
 #### Penyelesaian
-Tuliskan script ini:
+Tuliskan [script ini](soal5.sh):
 ```
 #!/bin/bash
 
