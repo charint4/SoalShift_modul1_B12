@@ -23,7 +23,14 @@
 
 #* * * * * /bin/bash /home/Penunggu/sisop/lat_mod1/move.sh
 
-14 14 14 2 * /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
-0 * * 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
+#14 14 14 2 * /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
+#0 * * 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
 
+#Cronjob untuk Soal1
+14 14 14 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
+
+#Cronjob untuk Soal4
+0 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh
+
+#Cronjob untuk Soal5
 2-30/6 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh
