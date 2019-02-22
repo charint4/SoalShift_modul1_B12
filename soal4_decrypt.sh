@@ -1,7 +1,6 @@
 #!/bin/bash
 
-nama=$(date '+%H:%M %d-%m-%Y')
-sif=$(date '+%H')
+sif=$(echo "$1" | head -c 2)
 
 base=$(printf "%x" "'a")
 keydec=`expr $base + $sif`
@@ -15,4 +14,4 @@ keyup=$(echo "$keyupdec" | echo $(xxd -p -r))
 keyupdec1=`expr $keyupdec - 1`
 keyup1=$(echo "$keyupdec1" | echo $(xxd -p -r))
 
-cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
+cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$1"_decrypted
