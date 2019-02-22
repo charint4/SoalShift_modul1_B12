@@ -6,7 +6,7 @@
     + [Full Code](#full-code)
 + [Perintah 2](#perintah-2)
     + [2.a](#a)
-    + 2.b
+    + [2.b](#b)
     + 2.c
 
 ### Perintah 1
@@ -94,3 +94,14 @@ awk -F, '/2012/ {a[$1]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products
      + `-r` untuk me-reverse hasil pengurutan (dari ascending menjadi descending)
 + `awk -F, '{print $1}'` mencetak kolom pertama dari hasil perintah sebelumnya
 + `head -1` mencetak record urutan teratas dari hasil perintah sebelumnya
+
+#### b.
+Masih pakai `awk` dan memanfaatkan output dari perintah bagian a. 
+```
+awk -F, -v negara="$negara" '($1~negara) && ($7 == 2012) {a[$4]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
+```
++ `-v negara="$negara"` membuat variable _negara_ yang berisi $negara (variabel yang menyimpan output dari bagian a)
++ `($1~negara)` memeriksa apakah dalam record-record di kolom 1 terdapat string yang terkandung dalam variabel _negara_
++  `&&` meng-AND-kan syarat pencarian
++ `($7 == 2012)` memeriksa apakah dalam record-record di kolom 7 terdapat record yang bernilai 2012
++ `END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'` kurang lebih sama seperti sebelumnya, hanya berbeda pada `head -3` yang berarti record yang dicetak adalah 3 record teratas.
