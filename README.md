@@ -129,3 +129,63 @@ produk3="Outdoor Protection"
 awk -F, -v produk3="$produk3" -v negara="$negara" ' ($1~negara) && ($4~produk3) && ($7 == 2012) {a[$6]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
 ```
 Tidak beda jauh dengan sebelum-sebelumnya, hanya data yang diambil berbeda.
+
+### Perintah 3
+Buatlah sebuah script bash yang dapat menghasilkan password secara acak
+sebanyak 12 karakter yang terdapat huruf besar, huruf kecil, dan angka. Password
+acak tersebut disimpan pada file berekstensi .txt dengan ketentuan pemberian nama
+sebagai berikut:
+
+a. Jika tidak ditemukan file password1.txt maka password acak tersebut
+disimpan pada file bernama password1.txt
+
+b. Jika file password1.txt sudah ada maka password acak baru akan
+disimpan pada file bernama password2.txt dan begitu seterusnya.
+
+c. Urutan nama file tidak boleh ada yang terlewatkan meski filenya
+dihapus.
+
+d. Password yang dihasilkan tidak boleh sama.
+
+#### Penyelesaian:
+Dengan segala pertimbangan syarat di atas, muncullah
+#### [Kodingan ini](soal3.sh) :
+```
+#!/bin/bash
+
+i=1
+pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
+
+while [ -f ./password"$i".txt ]
+do
+  if [ "$pass" == "$(cat ./password"$i".txt)" ]
+  then
+    pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
+    i=1
+  else
+    let "i++"
+  fi
+done
+
+echo "$pass" >> password"$i".txt
+```
++ `i=1` inisialisasi variabel _i_ untuk kepentingan iterasi
++  `pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)` mengisi variabel _pass_ dengan output dari perintah di dalamnya (command ini saya pakai untuk generate password-nya)
+     + `head /dev/urandom` mencetak bagian awal dari `/dev/urandom`
+     + `tr -dc A-Za-z0-9` digunakan agar hanya tersisa character-character `a-z`, `A-Z`, dan `0-9` dari output perintah sebelumnya
+     + `head -c 12` digunakan untuk mengambil 12 karakter pertama dari output perintah sebelumnya.
++ `while [ -f ./password"$i".txt ]` selama ada file yang bernama password"$i".txt maka perintah-perintah dalam while akan dijalankan.
+    + `-f` digunakan untuk memeriksa keberadaan file yang dicari. Bila ada, output-nya adalah _true_
+```
+if [ "$pass" == "$(cat ./password"$i".txt)" ]
+then
+   pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
+   i=1
+ else
+   let "i++"
+fi
+``` 
+memeriksa apakah password yang baru di-generate sama dengan password yang tersimpan. Bila iya maka password baru akan digenerate dan i kembali bernilai 1 untuk memeriksa adakah kesamaan dengan password-password yang tersimpan (dengan bantuan fungsi _while_). Sedangkan bila tidak ada password tersimpan yang bernilai sama dengan password yang baru di-generate, maka i akan ditambah 1.
++ `echo "$pass" >> password"$i".txt` bila pemeriksaan-pemeriksaan di atas telah dilewati, perintah ini lah yang akan menyimpan password-nya ke dalam file.
+    + `echo "$pass"` meng-output-kan variabel $pass
+    + `>> password"$i".txt` menyimpan output dari dari perintah sebelumnya ke dalam file password"$i".txt dimana $i adalah nilai i terakhir setelah berbagai pengecekan yang telah dilalui.
