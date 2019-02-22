@@ -191,3 +191,78 @@ memeriksa apakah password yang baru di-generate sama dengan password yang tersim
 + `echo "$pass" >> password"$i".txt` bila pemeriksaan-pemeriksaan di atas telah dilewati, perintah ini lah yang akan menyimpan password-nya ke dalam file.
     + `echo "$pass"` meng-output-kan variabel $pass
     + `>> password"$i".txt` menyimpan output dari dari perintah sebelumnya ke dalam file password"$i".txt dimana $i adalah nilai i terakhir setelah berbagai pengecekan yang telah dilalui.
+
+
+### Perintah 4
+Lakukan backup file syslog setiap jam dengan format nama file “jam:menit tanggal-
+bulan-tahun”. Isi dari file backup terenkripsi dengan konversi huruf (string
+manipulation) yang disesuaikan dengan jam dilakukannya backup misalkan sebagai
+berikut:
+
+a. Huruf b adalah alfabet kedua, sedangkan saat ini waktu menunjukkan
+pukul 12, sehingga huruf b diganti dengan huruf alfabet yang memiliki
+urutan ke 12+2 = 14.
+
+b. Hasilnya huruf b menjadi huruf n karena huruf n adalah huruf ke
+empat belas, dan seterusnya.
+
+c. setelah huruf z akan kembali ke huruf a
+
+d. Backup file syslog setiap jam.
+
+e. dan buatkan juga bash script untuk dekripsinya.
+
+#### Penyelesaian:
+Untuk enkripsinya
+```
+nama=$(date '+%H:%M %d-%m-%Y')
+```
+Menyimpan format nama file dengan perintah _date_ dan menyimpannya dalam variabel nama.
+```
+sif=$(date '+%H')
+```
+Menyimpan jam dalam variabel _sif_ untuk menentukan pergeseran huruf-huruf.
+```
+base=$(printf "%x" "'a")
+```
+Mendapatkan nilai hexadecimal dari karakter 'a' dan menyimpannya dalam variabel _base_ untuk kepentingan pergeseran
+```
+keydec=`expr $base + $sif`
+```
+Mendapatkan nilai hexadecimal dari karakter yang sudah dienkripsi (digeser). Selanjutnya akan kita sebut 'key'.
+```
+key=$(echo "$keydec" | echo $(xxd -p -r))
+```
+Mengubah nilai hexadecimal yang sudah didapat menjadi bentuk karakter-nya.
+```
+keydec1=`expr $keydec - 1`
+```
+Mendapatkan nilai hexadecimal dari karakter dalam alphabet yang terletak sebelum karakter 'key'. Selanjutnya akan disebut 'key-1'.
+```
+key1=$(echo "$keydec1" | echo $(xxd -p -r))
+```
+Mengubah nilai hexadecimal 'key-1' yang sudah didapat menjadi bentuk karakter-nya.
+```
+baseup=$(printf "%x" "'A")
+keyupdec=`expr $baseup + $sif`
+keyup=$(echo "$keyupdec" | echo $(xxd -p -r))
+keyupdec1=`expr $keyupdec - 1`
+keyup1=$(echo "$keyupdec1" | echo $(xxd -p -r))
+```
+Sama seperti proses sebelumnya tetapi untuk huruf besar (uppercase).
+```
+cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
+```
++ `cat /var/log/syslog` Membaca file syslog yang akan di-back-up
++ `tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1]` menggeser huruf-huruf pada output perintah sebelumnya agar 'a' menjadi karakter 'key' dan huruf-huruf setelah 'a' menjadi huruf-huruf setelah 'key'. Bila sudah melewati 'z' maka akan kembali ke 'a' (seperti pada permintaan soal). Ini merupakan perintah 'enkripsi'-nya.
++ `>> "$nama"` menyimpan output dari perintah sebelumnya dalam file yang namanya merupakan isi dari variable $name
+
+Untuk dekripsi hanya berbeda di line terakhir, yang mana itu adalah perintah dekripsinya:
+```
+cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
+```
++  `cat "$1"` membaca file yang namanya dimasukkan sebagai argumen pertama saat memanggil script ini. Dalam kata lain, file yang ingin didekripsi
++ `tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z]` kebalikan dari perintah enkripsi. Perintah ini mengembalikan pergeseran sehingga 'key' akan kembali menjadi 'a' dan seterusnya.
++ `>> "$nama"_decrypted` menyimpan output dari perintah sebelumnya dalam file yang namanya merupakan isi dari variable $name ditambahkan string "\_decrypted" di belakangnya
+
+NB: File dekripsi ini hanya dapat digunakan untuk mendekripsikan file yang terdekripsi di jam yang sama dengan jam kita mendekripsi.
