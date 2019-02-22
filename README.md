@@ -13,8 +13,8 @@
     + [Kodingan ini](#kodingan-ini)
 + [Soal 4](#soal-4)
     + [Encrypt](#encrypt)
-    + [Decrypt](#decrypt)
     + [Cronjob Soal4](#cronjob-soal4)
+    + [Decrypt](#decrypt)
 + [Soal 5](#soal-5)
     + [Cronjob Soal5](#cronjob-soal5)
 
@@ -268,6 +268,8 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 ##### Cronjob Soal4:
 0 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh
 + `0 * * * *` artinya script yang dipilih akan dijalankan “At minute 0.” ([by crontab.guru](https://crontab.guru/#0_*_*_*_*) yang artinya sama dengan "every hour" atau "setiap jam"
++ `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
++ `/home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh` path tempat script yang ingin dipakai berada
 
 #### Decrypt
 Untuk dekripsi, mirip dengan enkripsi. Perbedaannya terletak pada pengambilan nilai dari variabel $sif dan perintah dekripsinya
@@ -326,3 +328,6 @@ awk '!/[Ss][Uu][Dd][Oo]/ && /[Cc][Rr][Oo][Nn]/ {if(NF<13) print}' /var/log/syslo
 2-30/6 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh
 ```
 + `2-30/6 * * * *` artinya script yang dipilih akan dijalankan “At every 6th minute from 2 through 30.” ([by crontab.guru](https://crontab.guru/#2-30/6_*_*_*_*))
++ `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
++ `/home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh` path tempat script yang ingin dipakai berada
+
