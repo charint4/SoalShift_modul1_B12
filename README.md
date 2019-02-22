@@ -14,7 +14,9 @@
 + [Soal 4](#soal-4)
     + [Encrypt](#encrypt)
     + [Decrypt](#decrypt)
+    + [Cronjob Soal4](#cronjob-soal4)
 + [Soal 5](#soal-5)
+    + [Cronjob Soal5](#cronjob-soal5)
 
 ### Soal 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
@@ -70,7 +72,7 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 + `mv $(basename "$file") nature` memindahkan file yang sudah terdekripsi ke dalam directory nature sehingga me-replace file di dalam directory nature yang masih terenkripsi
 + `done` penutup dari perintah `do`
 
-##### [Cronjob Soal1](cronjob.sh) :
+##### Cronjob Soal1:
 ```
 14 14 14 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
 ```
@@ -263,6 +265,10 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 
 [Full encrypt code](soal4_encrypt.sh)
 
+##### Cronjob Soal4:
+0 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh
++ `0 * * * *` artinya script yang dipilih akan dijalankan “At minute 0.” ([by crontab.guru](https://crontab.guru/#0_*_*_*_*) yang artinya sama dengan "every hour" atau "setiap jam"
+
 #### Decrypt
 Untuk dekripsi, mirip dengan enkripsi. Perbedaannya terletak pada pengambilan nilai dari variabel $sif dan perintah dekripsinya
 Pengambilan nilai variabel $sif:
@@ -314,7 +320,8 @@ awk '!/[Ss][Uu][Dd][Oo]/ && /[Cc][Rr][Oo][Nn]/ {if(NF<13) print}' /var/log/syslo
 + `{if(NF<13) print}` jika field pada record tersebut kurang dari 13 maka baris tersebut akan dicetak
 + `/var/log/syslog` file yang akan diproses
 + `>> /home/Penunggu/modul1/logs` path dari file yang menyimpan output dari perintah sebelumnya. Menggunakan ">>" agar saat dilakukan back-up lagi maka hasilnya akan ter-_append_ (ditambahkan di bawahnya).
-Lalu tambahkan ini di crontab:
+
+##### Cronjob Soal5:
 ```
 2-30/6 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh
 ```
