@@ -7,7 +7,7 @@
 + [Perintah 2](#perintah-2)
     + [2.a](#a)
     + [2.b](#b)
-    + 2.c
+    + [2.c](#c)
 
 ### Perintah 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
@@ -105,3 +105,17 @@ awk -F, -v negara="$negara" '($1~negara) && ($7 == 2012) {a[$4]+=$10} END{for(i 
 +  `&&` meng-AND-kan syarat pencarian
 + `($7 == 2012)` memeriksa apakah dalam record-record di kolom 7 terdapat record yang bernilai 2012
 + `END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'` kurang lebih sama seperti sebelumnya, hanya berbeda pada `head -3` yang berarti record yang dicetak adalah 3 record teratas.
+
+#### c.
+Untuk bagian c ini saya memilih untuk melakukan _hard coding_. Berikut syntax kodenya untuk ketiga hasil
+```
+produk1="Personal Accessories"
+awk -F, -v produk1="$produk1" -v negara="$negara" ' ($1~negara) && ($4~produk1) && ($7 == 2012) {a[$6]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
+
+produk2="Camping Equipment"
+awk -F, -v produk2="$produk2" -v negara="$negara" ' ($1~negara) && ($4~produk2) && ($7 == 2012) {a[$6]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
+
+produk3="Outdoor Protection"
+awk -F, -v produk3="$produk3" -v negara="$negara" ' ($1~negara) && ($4~produk3) && ($7 == 2012) {a[$6]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
+```
+Tidak beda jauh dengan sebelum-sebelumnya, hanya data yang diambil berbeda.
