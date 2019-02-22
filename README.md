@@ -274,7 +274,7 @@ sif=$(echo "$1" | head -c 2)
 
 Perintah dekripsi:
 ```
-cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
+cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$1"_decrypted
 ```
 +  `cat "$1"` membaca file yang namanya dimasukkan sebagai argumen pertama saat memanggil script ini. Dalam kata lain, file yang ingin didekripsi
 + `tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z]` kebalikan dari perintah enkripsi. Perintah ini mengembalikan pergeseran sehingga 'key' akan kembali menjadi 'a' dan seterusnya.
