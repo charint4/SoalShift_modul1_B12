@@ -264,7 +264,15 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 [Full encrypt code](soal4_encrypt.sh)
 
 #### Decrypt
-Untuk dekripsi hanya berbeda di line terakhir, yang mana itu adalah perintah dekripsinya:
+Untuk dekripsi, mirip dengan enkripsi. Perbedaannya terletak pada pengambilan nilai dari variabel $sif dan perintah dekripsinya
+Pengambilan nilai variabel $sif:
+```
+sif=$(echo "$1" | head -c 2)
+```
++ Meng-output-kan argumen pertama yang di-input-kan (yang seharusnya adalah nama file yang ingin didekripsi) saat script ini dijalankan.
++ `| head -c 2` Mengambil dua karakter awal dari output perintah sebelumnya (yang seharusnya adalah jam kapan file tersebut dienkripsi)
+
+Perintah dekripsi:
 ```
 cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
 ```
@@ -274,7 +282,7 @@ cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
 
 [Full decrypt code](soal4_decrypt.sh)
 
-NB: File dekripsi ini hanya dapat digunakan untuk mendekripsikan file yang terdekripsi di jam yang sama dengan jam kita mendekripsi.
+Syntax untuk melakukan dekripsi adalah `bash soal4_decrypt.sh "nama_file_yang_ingin_didekripsi"`.
 
 ### Soal 5
 Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi
