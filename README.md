@@ -4,6 +4,10 @@
 + [Perintah 1](#perintah-1)
     + [Basic Commands](#penyelesaian)
     + [Full Code](#full-code)
++ [Perintah 2](#perintah-2)
+    + [2.a](#a)
+    + 2.b
+    + 2.c
 
 ### Perintah 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
@@ -58,3 +62,35 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 + `echo "$file decrypted"` output text ke terminal saat file sudah terdekripsi
 + `mv $(basename "$file") nature` memindahkan file yang sudah terdekripsi ke dalam directory nature sehingga me-replace file di dalam directory nature yang masih terenkripsi
 + `done` penutup dari perintah `do`
+
+### Perintah 2
+Anda merupakan pegawai magang pada sebuah perusahaan retail, dan anda diminta
+untuk memberikan laporan berdasarkan file WA_Sales_Products_2012-14.csv.
+Laporan yang diminta berupa:
+
+a. Tentukan negara dengan penjualan(quantity) terbanyak pada tahun
+2012.
+b. Tentukan tiga product line yang memberikan penjualan(quantity)
+terbanyak pada soal poin a.
+c. Tentukan tiga product yang memberikan penjualan(quantity)
+terbanyak berdasarkan tiga product line yang didapatkan pada soal
+poin b.
+
+#### Penyelesaian:
+#### a.
+Gunakan `awk`. Syntax yang akan digunakan adalah
+```
+awk -F, '/2012/ {a[$1]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | awk -F, '{print $1}' | head -1
+```
++ `-F,` adalah argumen untuk memberitahu awk bahwa pembatas tiap kolom dari data yang kita miliki adalah koma (,)
++ `/2012/` mencari record yang memiliki string tersebut
++ `{a[$1]+=$10}` menjumlahkan quantity (pada kolom ke-10) dari array 'a' yang memiliki 'index'/nama yang sama.
++ `END{for(i in a) print i",",a[i]}` melakukan loop sebanyak 'index' array 'a' dan mencetak 'index' (yang berisi nama-nama negara) dan isi dari 'index' tersebut (kuantitas tiap negara penjualan)
++ `WA_Sales_Products_2012-14.csv` nama file yang dijadikan input
++ `sort -t $"," -n -k2 -r` mengurutkan output dari perintah sebelumnnya dengan ketentuan,
+     + `-t $","` pembatas tiap kolom adalah koma (,)
+     + `-n` mengurutkan berdasarkan nilai numerik
+     + `-k2` dari kolom ke-2
+     + `-r` untuk me-reverse hasil pengurutan (dari ascending menjadi descending)
++ `awk -F, '{print $1}'` mencetak kolom pertama dari hasil perintah sebelumnya
++ `head -1` mencetak record urutan teratas dari hasil perintah sebelumnya
