@@ -1,16 +1,19 @@
 # SoalShift_modul1_B12
 
 ### Outline
-+ [Perintah 1](#perintah-1)
++ [Soal 1](#soal-1)
     + [Basic Commands](#penyelesaian)
     + [Full Code](#full-code)
     + [Cronjob Soal1](#cronjob-soal1)
-+ [Perintah 2](#perintah-2)
++ [Soal 2](#soal-2)
     + [2.a](#a)
     + [2.b](#b)
     + [2.c](#c)
-+ [Perintah 3](#perintah-3)
++ [Soal 3](#soal-3)
     + [Kodingan ini](#kodingan-ini)
++ [Soal 4](#soal-4)
+    + [Encrypt](#encrypt)
+    + [Decrypt](#decrypt)
 
 ### Soal 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
@@ -132,7 +135,7 @@ awk -F, -v produk3="$produk3" -v negara="$negara" ' ($1~negara) && ($4~produk3) 
 ```
 Tidak beda jauh dengan sebelum-sebelumnya, hanya data yang diambil berbeda.
 
-### Perintah 3
+### Soal 3
 Buatlah sebuah script bash yang dapat menghasilkan password secara acak
 sebanyak 12 karakter yang terdapat huruf besar, huruf kecil, dan angka. Password
 acak tersebut disimpan pada file berekstensi .txt dengan ketentuan pemberian nama
@@ -193,7 +196,7 @@ memeriksa apakah password yang baru di-generate sama dengan password yang tersim
     + `>> password"$i".txt` menyimpan output dari dari perintah sebelumnya ke dalam file password"$i".txt dimana $i adalah nilai i terakhir setelah berbagai pengecekan yang telah dilalui.
 
 
-### Perintah 4
+### Soal 4
 Lakukan backup file syslog setiap jam dengan format nama file “jam:menit tanggal-
 bulan-tahun”. Isi dari file backup terenkripsi dengan konversi huruf (string
 manipulation) yang disesuaikan dengan jam dilakukannya backup misalkan sebagai
@@ -213,7 +216,7 @@ d. Backup file syslog setiap jam.
 e. dan buatkan juga bash script untuk dekripsinya.
 
 #### Penyelesaian:
-Untuk enkripsinya
+#### Encrypt
 ```
 nama=$(date '+%H:%M %d-%m-%Y')
 ```
@@ -257,6 +260,9 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 + `tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1]` menggeser huruf-huruf pada output perintah sebelumnya agar 'a' menjadi karakter 'key' dan huruf-huruf setelah 'a' menjadi huruf-huruf setelah 'key'. Bila sudah melewati 'z' maka akan kembali ke 'a' (seperti pada permintaan soal). Ini merupakan perintah 'enkripsi'-nya.
 + `>> "$nama"` menyimpan output dari perintah sebelumnya dalam file yang namanya merupakan isi dari variable $name
 
+[Full encrypt code](soal4_encrypt.sh)
+
+#### Decrypt
 Untuk dekripsi hanya berbeda di line terakhir, yang mana itu adalah perintah dekripsinya:
 ```
 cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
@@ -265,4 +271,42 @@ cat "$1" | tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z] >> "$nama"_decrypted
 + `tr [$key-za-$key1$keyup-ZA-$keyup1] [a-zA-Z]` kebalikan dari perintah enkripsi. Perintah ini mengembalikan pergeseran sehingga 'key' akan kembali menjadi 'a' dan seterusnya.
 + `>> "$nama"_decrypted` menyimpan output dari perintah sebelumnya dalam file yang namanya merupakan isi dari variable $name ditambahkan string "\_decrypted" di belakangnya
 
+[Full decrypt code](soal4_decrypt.sh)
+
 NB: File dekripsi ini hanya dapat digunakan untuk mendekripsikan file yang terdekripsi di jam yang sama dengan jam kita mendekripsi.
+
+### Soal 5
+Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi
+kriteria berikut:
+
+a. Tidak mengandung string “sudo”, tetapi mengandung string “cron”,
+serta buatlah pencarian stringnya tidak bersifat case sensitive,
+sehingga huruf kapital atau tidak, tidak menjadi masalah.
+
+b. Jumlah field (number of field) pada baris tersebut berjumlah kurang
+dari 13.
+
+c. Masukkan record tadi ke dalam file logs yang berada pada direktori
+/home/[user]/modul1.
+
+d. Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh
+13:02, 13:08, 13:14, dst.
+
+#### Penyelesaian
+Tuliskan script ini:
+```
+#!/bin/bash
+
+awk '!/[Ss][Uu][Dd][Oo]/ && /[Cc][Rr][Oo][Nn]/ {if(NF<13) print}' /var/log/syslog >> /home/Penunggu/modul1/logs
+```
++ `awk` menggunakan perintah awk
++ `!/[Ss][Uu][Dd][Oo]/` mencari record yang tidak (!) mengandung "sudo" (case insensitive) di dalamnya.
++ `/[Cc][Rr][Oo][Nn]/` mencari record yang mengandung "cron" (case insensitive) di dalamnya.
++ `{if(NF<13) print}` jika field pada record tersebut kurang dari 13 maka baris tersebut akan dicetak
++ `/var/log/syslog` file yang akan diproses
++ `>> /home/Penunggu/modul1/logs` path dari file yang menyimpan output dari perintah sebelumnya. Menggunakan ">>" agar saat dilakukan back-up lagi maka hasilnya akan ter-_append_ (ditambahkan di bawahnya).
+Lalu tambahkan ini di crontab:
+```
+2-30/6 * * * * /bin/bash /home/Penunggu/sisop/Modul1/jawab/lima/logscript.sh
+```
++ `2-30/6 * * * *` artinya script yang dipilih akan dijalankan “At every 6th minute from 2 through 30.” ([by crontab.guru](https://crontab.guru/#2-30/6_*_*_*_*))
