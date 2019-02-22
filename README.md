@@ -4,12 +4,13 @@
 + [Perintah 1](#perintah-1)
     + [Basic Commands](#penyelesaian)
     + [Full Code](#full-code)
+    + [Cronjob Soal1](#cronjob-soal1)
 + [Perintah 2](#perintah-2)
     + [2.a](#a)
     + [2.b](#b)
     + [2.c](#c)
 
-### Perintah 1
+### Soal 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
 dienkripsi oleh seseorang menggunakan bash script, file yang dimaksud adalah
 nature.zip. Karena terlalu mudah kalian memberikan syarat akan membuka seluruh
@@ -63,7 +64,16 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 + `mv $(basename "$file") nature` memindahkan file yang sudah terdekripsi ke dalam directory nature sehingga me-replace file di dalam directory nature yang masih terenkripsi
 + `done` penutup dari perintah `do`
 
-### Perintah 2
+##### [Cronjob Soal1](cronjob.sh)
+```
+14 14 14 2 5 /bin/bash /home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh
+```
++ `14 14 14 2 5` maksudnya script yang dipilih akan dijalankan _“At 14:14 on day-of-month 14 and on Friday in February.”_ (by [crontab.guru](https://crontab.guru/#14_14_14_2_5))
++ `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
++ `/home/Penunggu/sisop/Modul1/jawab/satu/decryptor.sh` path tempat script yang ingin dipakai berada
+
+
+### Soal 2
 Anda merupakan pegawai magang pada sebuah perusahaan retail, dan anda diminta
 untuk memberikan laporan berdasarkan file WA_Sales_Products_2012-14.csv.
 Laporan yang diminta berupa:
