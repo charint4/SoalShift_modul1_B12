@@ -9,6 +9,8 @@
     + [2.a](#a)
     + [2.b](#b)
     + [2.c](#c)
++ [Perintah 3](#perintah-3)
+    + [Full Code](#kodingan-ini)
 
 ### Soal 1
 Anda diminta tolong oleh teman anda untuk mengembalikan filenya yang telah
