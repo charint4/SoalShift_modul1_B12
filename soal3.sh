@@ -7,21 +7,25 @@ genpass() {
 i=1
 genpass
 
-if [[ $pass =~ [A-Z] ]]
-then
-    if [[ $pass =~ [a-z] ]]
+while [ $cek == 1 ]
+do
+    if [[ $pass =~ [A-Z] ]]
     then
-        if [[ $pass =~ [0-9] ]]
+        if [[ $pass =~ [a-z] ]]
         then
+            if [[ $pass =~ [0-9] ]]
+            then
+                cek=0
+            else
+                genpass
+            fi
         else
             genpass
         fi
     else
         genpass
     fi
-else
-    genpass
-fi
+done
 
 jml=0
 for files in password*.txt
