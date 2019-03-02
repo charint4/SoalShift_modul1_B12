@@ -396,3 +396,4 @@ awk '!/[Ss][Uu][Dd][Oo]/ && /[Cc][Rr][Oo][Nn]/ {if(NF<13) print}' /var/log/syslo
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
 + `/home/Penunggu/sisop/Modul1/jawab/lima/soal5.sh` path tempat script yang ingin dipakai berada
 
+![gambar5](soal5_hasil.png)
