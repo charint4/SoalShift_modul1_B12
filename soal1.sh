@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd /home/Penunggu/sisop/Modul1/jawab/satu
 unzip nature.zip
 
 for file in "nature/"*
