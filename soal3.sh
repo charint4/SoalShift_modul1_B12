@@ -26,27 +26,28 @@ else
     genpass
 fi
 
-while [ -f ./password"$i".txt ]
+jml=0
+for files in password*.txt
 do
-  if [ "$pass" == "$(cat ./password"$i".txt)" ]
+    let "jml++"
+done
+echo $jml
+iter=$jml
+
+while [ $iter -gt 0 ]
+do
+  if [ "$pass" == "$(cat ./password"$iter".txt)" ]
   then
     genpass
-    i=1
+    iter=$jml
   else
-    let "i++"
-    j=`expr $i+1`
-    while [ -f ./password"$j".txt ]
-    do
-      if [ "$pass" == "$(cat ./password"$j".txt)" ]
-      then
-        i=1
-        break
-      else
-        let "j++"
-      fi
-    done
+    let "iter--"
   fi
 done
 
-echo "$pass" >> password"$i".txt
+while [ -f ./password"$i".txt ]
+do
+    let "i++"
+done
 
+echo "$pass" >> password"$i".txt
