@@ -84,7 +84,7 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 
 Cara memeriksa berjalan atau tidaknya cronjob tersebut adalah dengan mengganti tanggal sistem menjadi tanggal yang harinya merupakan hari Jumat yang terdapat pada bulan Februari dan mengganti jamnya menjadi sebelum jam 14:14 (contoh 14:13:30). Setelah itu lakukan `sudo service cron restart`. Cek di direktori tempat file nature.zip berada apakah decrypt-nya berjalan.
 
-
+![gambar1](Soal1_HasilDecrypt.png)
 ### Soal 2
 Anda merupakan pegawai magang pada sebuah perusahaan retail, dan anda diminta
 untuk memberikan laporan berdasarkan file WA_Sales_Products_2012-14.csv.
