@@ -233,31 +233,45 @@ sif=$(date '+%H')
 ```
 Menyimpan jam dalam variabel _sif_ untuk menentukan pergeseran huruf-huruf.
 ```
-base=$(printf "%x" "'a")
+decbase=$(printf "%d" "'a")
 ```
-Mendapatkan nilai hexadecimal dari karakter 'a' dan menyimpannya dalam variabel _base_ untuk kepentingan pergeseran
+Mendapatkan nilai decimal dari karakter 'a' dan menyimpannya dalam variabel _decbase_ untuk kepentingan pergeseran
 ```
-keydec=`expr $base + $sif`
+keydec=`expr $decbase + $sif`
 ```
-Mendapatkan nilai hexadecimal dari karakter yang sudah dienkripsi (digeser). Selanjutnya akan kita sebut 'key'.
+Mendapatkan nilai decimal dari karakter yang sudah dienkripsi (digeser). Selanjutnya akan kita sebut 'key'.
 ```
-key=$(echo "$keydec" | echo $(xxd -p -r))
+keyhex=$(bc <<<"obase=16;$keydec")
 ```
-Mengubah nilai hexadecimal yang sudah didapat menjadi bentuk karakter-nya.
+Mendapatkan nilai hexadecimal dari karakter 'key' dan menyimpannya dalam variabel _keyhex_ untuk memunculkannya kembali ke bentuk 'huruf'.
++ `bc <<<"obase=16;$keydec"` di sini saya memanfaatkan _command_ `bc` (Basic Calculator) untuk mengubah value dari $keydec (yang merupakan decimal) menjadi basis 16 atau hexadecimal. Bentuk lain dari _command_ tersebut adalah `echo "ibase=10;obase=16;97" | bc -l
+`
+```
+key=$(echo $keyhex | xxd -p -r)
+```
+Mengubah nilai hexadecimal yang sudah didapat menjadi bentuk karakter(huruf)-nya dan menyimpannya dalam variabel _key_.
 ```
 keydec1=`expr $keydec - 1`
 ```
-Mendapatkan nilai hexadecimal dari karakter dalam alphabet yang terletak sebelum karakter 'key'. Selanjutnya akan disebut 'key-1'.
+Mendapatkan nilai decimal dari karakter dalam alphabet yang terletak sebelum karakter 'key'. Selanjutnya akan disebut 'key-1'.
 ```
-key1=$(echo "$keydec1" | echo $(xxd -p -r))
+key1hex=$(bc <<<"obase=16;$keydec1")
 ```
-Mengubah nilai hexadecimal 'key-1' yang sudah didapat menjadi bentuk karakter-nya.
+Mendapatkan nilai hexadecimal dari 'key-1' dan menyimpannya dalam variabel _key1hex_ untuk memunculkannya kembali ke bentuk 'huruf'.
 ```
-baseup=$(printf "%x" "'A")
-keyupdec=`expr $baseup + $sif`
-keyup=$(echo "$keyupdec" | echo $(xxd -p -r))
-keyupdec1=`expr $keyupdec - 1`
-keyup1=$(echo "$keyupdec1" | echo $(xxd -p -r))
+key1=$(echo $key1hex | xxd -p -r)
+```
+Mengubah nilai hexadecimal 'key-1' yang sudah didapat menjadi bentuk karakter(huruf)-nya.
+
+```
+decbaseup=$(printf "%d" "'A")
+keyupdec=`expr $decbaseup + $sif`
+keyuphex=$(bc <<<"obase=16;$keyupdec")
+keyup=$(echo $keyuphex | xxd -p -r)
+
+keydecup1=`expr $keyupdec - 1`
+keyup1hex=$(bc <<<"obase=16;$keydecup1")
+keyup1=$(echo $keyup1hex | xxd -p -r)
 ```
 Sama seperti proses sebelumnya tetapi untuk huruf besar (uppercase).
 ```
@@ -266,6 +280,14 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 + `cat /var/log/syslog` Membaca file syslog yang akan di-back-up
 + `tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1]` menggeser huruf-huruf pada output perintah sebelumnya agar 'a' menjadi karakter 'key' dan huruf-huruf setelah 'a' menjadi huruf-huruf setelah 'key'. Bila sudah melewati 'z' maka akan kembali ke 'a' (seperti pada permintaan soal). Ini merupakan perintah 'enkripsi'-nya.
 + `>> "$nama"` menyimpan output dari perintah sebelumnya dalam file yang namanya merupakan isi dari variable $name
+```
+if [ $sif == "00" ]
+then
+    cat /var/log/syslog >> "$nama"
+    exit
+fi
+```
+Barisan kode di atas adalah untuk _case_ saat _backup_ dilakukan pada jam 00 dimana tidak terjadi pergeseran huruf-huruf (enkripsi). 
 
 [Full encrypt code](soal4_encrypt.sh)
 
@@ -274,6 +296,7 @@ cat /var/log/syslog | tr [a-zA-Z] [$key-za-$key1$keyup-ZA-$keyup1] >> "$nama"
 + `0 * * * *` artinya script yang dipilih akan dijalankan “At minute 0.” (by [crontab.guru](https://crontab.guru/#0_*_*_*_*) yang artinya sama dengan "every hour" atau "setiap jam"
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
 + `/home/Penunggu/sisop/Modul1/jawab/empat/soal4_encrypt.sh` path tempat script yang ingin dipakai berada
++ Karena tidak dispesifikkan, file output akan berada di direktori `/home/[user]`
 
 #### Decrypt
 Untuk dekripsi, mirip dengan enkripsi. Perbedaannya terletak pada pengambilan nilai dari variabel $sif dan perintah dekripsinya
