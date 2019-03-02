@@ -171,27 +171,32 @@ Fungsi untuk men-generate password-nya.
      + `head -c 12` digunakan untuk mengambil 12 karakter pertama dari output perintah sebelumnya.
 
 ```
-if [[ $pass =~ [A-Z] ]]
-then
-    if [[ $pass =~ [a-z] ]]
+cek=1
+while [ $cek == 1 ]
+do
+    if [[ $pass =~ [A-Z] ]]
     then
-        if [[ $pass =~ [0-9] ]]
+        if [[ $pass =~ [a-z] ]]
         then
+            if [[ $pass =~ [0-9] ]]
+            then
+                cek=0
+            else
+                genpass
+            fi
         else
             genpass
         fi
     else
         genpass
     fi
-else
-    genpass
-fi
+done
 ```
 Melakukan pengecekan terhadap password yang di-generate. Apakah sudah memenuhi ketentuan atau belum. Bila belum sesuai ketentuan, password baru akan di-generate.
 + `if [[ $pass =~ [A-Z] ]]` memeriksa apakah value $pass mengandung huruf besar
 + `if [[ $pass =~ [a-z] ]]` memeriksa apakah value $pass mengandung huruf kecil
 + `if [[ $pass =~ [0-9] ]]` memeriksa apakah value $pass mengandung angka
-
++ bila cek = 0 maka password sudah memenuhi ketentuan dan keluar dari loop.
 ```
 jml=0
 for files in password*.txt
