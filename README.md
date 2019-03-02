@@ -52,6 +52,7 @@ Cara di atas adalah untuk mendekripsi satu buah file. Untuk mendekripsi seluruh 
 ##### [Full Code](soal1.sh):
 ```
 #!/bin/bash
+cd /home/Penunggu/sisop/Modul1/jawab/satu
 unzip nature.zip
 
 for file in "nature/"*
@@ -62,7 +63,7 @@ do
 done
 ```
 + `#!/bin/bash` untuk memberitahu sistem bahwa perintah-perintah berikutnya harus dijalankan oleh Bash
-+ `unzip nature.zip` meng-unzip file _nature.zip_
++ `cd /home/Penunggu/sisop/Modul1/jawab/satu` _change directory_ ke path yang dituliskan. Dicantumkan agar dapat dijalankan melalui crontab+ `unzip nature.zip` meng-unzip file _nature.zip_
 + `for file in "nature/"*` untuk setiap file (nama variabel) di directory nature
 + `do` lakukan
 + `base64 -d "$file" | xxd -r > $(basename "$file")` dekripsi file, output-nya akan berada di directory tempat script berada. $file adalah variabel yang berisi nama file pada iterasi tersebut. Nilainya adalah "nature/nama_file".
