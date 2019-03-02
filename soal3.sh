@@ -9,13 +9,10 @@ genpass
 
 if [[ $pass =~ [A-Z] ]]
 then
-    echo "Besar dah ada"
     if [[ $pass =~ [a-z] ]]
     then
-        echo "Kecil dah ada"
         if [[ $pass =~ [0-9] ]]
         then
-            echo "Angka dah ada"
         else
             genpass
         fi
@@ -31,7 +28,6 @@ for files in password*.txt
 do
     let "jml++"
 done
-echo $jml
 iter=$jml
 
 while [ $iter -gt 0 ]
