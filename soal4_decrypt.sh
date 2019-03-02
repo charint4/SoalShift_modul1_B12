@@ -4,7 +4,7 @@ sif=$(echo "$1" | head -c 2)
 
 if [ $sif == "00" ]
 then
-    cat /var/log/syslog >> "$1"_decrypted
+    cat "$1" >> "$1"_decrypted
     exit
 fi
 
