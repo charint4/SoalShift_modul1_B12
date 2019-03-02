@@ -82,7 +82,7 @@ $(basename "$file") maksudnya sama seperti _\`basename "$file"\`_
 + `/bin/bash` untuk memberitahu agar script yang dipilih dijalankan menggunakan bash
 + `/home/Penunggu/sisop/Modul1/jawab/satu/soal1.sh` path tempat script yang ingin dipakai berada
 
-Cara mengetes berjalan atau tidaknya cronjob tersebut adalah dengan mengganti tanggal sistem menjadi tanggal yang harinya merupakan hari Jumat yang terdapat pada bulan Februari dan mengganti jamnya menjadi sebelum jam 14:14 (contoh 14:13:30). Setelah itu lakukan `sudo service cron restart`. Cek di direktori tempat file nature.zip berada apakah decrypt-nya berjalan.
+Cara memeriksa berjalan atau tidaknya cronjob tersebut adalah dengan mengganti tanggal sistem menjadi tanggal yang harinya merupakan hari Jumat yang terdapat pada bulan Februari dan mengganti jamnya menjadi sebelum jam 14:14 (contoh 14:13:30). Setelah itu lakukan `sudo service cron restart`. Cek di direktori tempat file nature.zip berada apakah decrypt-nya berjalan.
 
 
 ### Soal 2
