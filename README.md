@@ -139,6 +139,7 @@ awk -F, -v produk1="$produk1" -v negara="$negara" -v produk2="$produk2" -v produ
 Tidak beda jauh dengan sebelum-sebelumnya, hanya data yang diambil berbeda.
 + `(($4~produk1) || ($4~produk2) || ($4~produk3))` mengapa menggunakan OR? Agar record yang _mengandung salah satu dari ketiga variabel produk_ ikut terambil. Bukan record yang _memiliki/mengandung ketiga variabel produk tersebut secara bersamaan_.
 
+![gambar2](soal2_Laporan.png)
 ### Soal 3
 Buatlah sebuah script bash yang dapat menghasilkan password secara acak
 sebanyak 12 karakter yang terdapat huruf besar, huruf kecil, dan angka. Password
