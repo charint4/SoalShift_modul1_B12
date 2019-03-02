@@ -160,45 +160,80 @@ d. Password yang dihasilkan tidak boleh sama.
 Dengan segala pertimbangan syarat di atas, muncullah
 #### [Kodingan ini](soal3.sh) :
 ```
-#!/bin/bash
-
-i=1
-pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
-
-while [ -f ./password"$i".txt ]
-do
-  if [ "$pass" == "$(cat ./password"$i".txt)" ]
-  then
+genpass() {
     pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
-    i=1
-  else
-    let "i++"
-  fi
-done
-
-echo "$pass" >> password"$i".txt
+}
 ```
-+ `i=1` inisialisasi variabel _i_ untuk kepentingan iterasi
-+  `pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)` mengisi variabel _pass_ dengan output dari perintah di dalamnya (command ini saya pakai untuk generate password-nya)
+Fungsi untuk men-generate password-nya.
++ `pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)` mengisi variabel _pass_ dengan output dari perintah di dalamnya (command ini saya pakai untuk generate password-nya)
      + `head /dev/urandom` mencetak bagian awal dari `/dev/urandom`
      + `tr -dc A-Za-z0-9` digunakan agar hanya tersisa character-character `a-z`, `A-Z`, dan `0-9` dari output perintah sebelumnya
      + `head -c 12` digunakan untuk mengambil 12 karakter pertama dari output perintah sebelumnya.
-+ `while [ -f ./password"$i".txt ]` selama ada file yang bernama password"$i".txt maka perintah-perintah dalam while akan dijalankan.
-    + `-f` digunakan untuk memeriksa keberadaan file yang dicari. Bila ada, output-nya adalah _true_
+
 ```
-if [ "$pass" == "$(cat ./password"$i".txt)" ]
+if [[ $pass =~ [A-Z] ]]
 then
-   pass=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
-   i=1
- else
-   let "i++"
+    if [[ $pass =~ [a-z] ]]
+    then
+        if [[ $pass =~ [0-9] ]]
+        then
+        else
+            genpass
+        fi
+    else
+        genpass
+    fi
+else
+    genpass
 fi
-``` 
-memeriksa apakah password yang baru di-generate sama dengan password yang tersimpan. Bila iya maka password baru akan digenerate dan i kembali bernilai 1 untuk memeriksa adakah kesamaan dengan password-password yang tersimpan (dengan bantuan fungsi _while_). Sedangkan bila tidak ada password tersimpan yang bernilai sama dengan password yang baru di-generate, maka i akan ditambah 1.
+```
+Melakukan pengecekan terhadap password yang di-generate. Apakah sudah memenuhi ketentuan atau belum. Bila belum sesuai ketentuan, password baru akan di-generate.
++ `if [[ $pass =~ [A-Z] ]]` memeriksa apakah value $pass mengandung huruf besar
++ `if [[ $pass =~ [a-z] ]]` memeriksa apakah value $pass mengandung huruf kecil
++ `if [[ $pass =~ [0-9] ]]` memeriksa apakah value $pass mengandung angka
+
+```
+jml=0
+for files in password*.txt
+do
+    let "jml++"
+done
+iter=$jml
+```
+Melakukan iterasi untuk mendapatkan jumlah file password*.txt yang sudah ada
++ `jml=0` inisialisasi variabel _jml_ untuk menyimpan jumlah file password*.txt yang sudah ada
++ `iter=$jml` inisialisasi variabel _iter_ untuk kepentingan pengecekan kesamaan password
+
+```
+while [ $iter -gt 0 ]
+do
+  if [ "$pass" == "$(cat ./password"$iter".txt)" ]
+  then
+    genpass
+    iter=$jml
+  else
+    let "iter--"
+  fi
+done
+```
+Melakukan iterasi untuk memeriksa apakah password yang baru di-generate sudah berbeda dari password-password yang sudah ada.
+
+```
+while [ -f ./password"$i".txt ]
+do
+    let "i++"
+done
+```
+Menemukan nilai _i_ untuk nama file password yang akan dibuat (sehingga bila ada _i_ yang terlompati maka akan diisi)
++ `while [ -f ./password"$i".txt ]` selama ada file yang bernama password"$i".txt maka perintah-perintah dalam while akan dijalankan.
++ `let "i++"` menambah nilai _i_ sebanyak 1 setiap iterasi terjadi
+
+```
+echo "$pass" >> password"$i".txt
+```
 + `echo "$pass" >> password"$i".txt` bila pemeriksaan-pemeriksaan di atas telah dilewati, perintah ini lah yang akan menyimpan password-nya ke dalam file.
     + `echo "$pass"` meng-output-kan variabel $pass
     + `>> password"$i".txt` menyimpan output dari dari perintah sebelumnya ke dalam file password"$i".txt dimana $i adalah nilai i terakhir setelah berbagai pengecekan yang telah dilalui.
-
 
 ### Soal 4
 Lakukan backup file syslog setiap jam dengan format nama file “jam:menit tanggal-
