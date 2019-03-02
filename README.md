@@ -134,10 +134,7 @@ Untuk bagian c ini saya memilih untuk melakukan _hard coding_. Berikut syntax ko
 produk1="Personal Accessories"      #output dari jawaban soal b
 produk2="Camping Equipment"         #output dari jawaban soal b
 produk3="Outdoor Protection"        #output dari jawaban soal b
-awk -F, -v produk1="$produk1" -v negara="$negara" -v produk2="$produk2" -v produk3="$produk3" '
-  ($1~negara) && (($4~produk1) || ($4~produk2) || ($4~produk3)) && ($7 == 2012) {a[$6]+=$10}
-  END{for(i in a) print i",",a[i]}
-  ' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
+awk -F, -v produk1="$produk1" -v negara="$negara" -v produk2="$produk2" -v produk3="$produk3" '($1~negara) && (($4~produk1) || ($4~produk2) || ($4~produk3)) && ($7 == 2012) {a[$6]+=$10} END{for(i in a) print i",",a[i]}' WA_Sales_Products_2012-14.csv | sort -t $"," -n -k2 -r | head -3 | awk -F, '{print $1}'
 ```
 Tidak beda jauh dengan sebelum-sebelumnya, hanya data yang diambil berbeda.
 + `(($4~produk1) || ($4~produk2) || ($4~produk3))` mengapa menggunakan OR? Agar record yang _mengandung salah satu dari ketiga variabel produk_ ikut terambil. Bukan record yang _memiliki/mengandung ketiga variabel produk tersebut secara bersamaan_.
